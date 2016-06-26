@@ -1,6 +1,9 @@
 package PIDsub;
 
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
+
+import org.usfirst.frc.team4468.robot.CMap;
+
 import edu.wpi.first.wpilibj.*;
 
 /**
@@ -22,14 +25,11 @@ public class rightPID extends PIDSubsystem {
     }
     
     protected double returnPIDInput() {
-        // Return your input value for the PID loop
-        // e.g. a sensor, like a potentiometer:
-        // yourPot.getAverageVoltage() / kYourMaxVoltage;
-    	return 0.0;
+    	double rightDistance = CMap.rightDriveEncoder.getDistance();
+    	return rightDistance;
     }
     
     protected void usePIDOutput(double output) {
-        // Use output to drive your system, like a motor
-        // e.g. yourMotor.set(output);
+    	CMap.rightDriveTalon.set(output);
     }
 }

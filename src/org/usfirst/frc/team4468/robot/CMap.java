@@ -1,7 +1,10 @@
 package org.usfirst.frc.team4468.robot;
 import edu.wpi.first.wpilibj.*;
+import PIDsub.*;
 
 public class CMap {
+	public static boolean initialCrossComplete;
+	public static boolean linedUp;
 	
     public static final double wheelDiameter = 6;
     public static final double pulsePerRevolution = 360;
@@ -26,9 +29,14 @@ public class CMap {
 	public static Encoder leftDriveEncoder;
 	public static Encoder rightDriveEncoder;
 	
+	public static leftPID leftPID;
+	public static rightPID rightPID;
+	
 	public static Compressor compressor;
 	
 	public static Solenoid leftGearShift, rightGearShift;
+	
+	
 	
 	
 	
@@ -47,9 +55,13 @@ public class CMap {
 		leftDriveEncoder = new Encoder(0, 1);
 		rightDriveEncoder = new Encoder(2, 3);
 		
+		leftPID = new leftPID();
+		rightPID = new rightPID();
+		
 		compressor = new Compressor();
 		
-		
+		initialCrossComplete = false;
+		linedUp = false;
 		
 	}
 }
