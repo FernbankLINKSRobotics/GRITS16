@@ -18,7 +18,7 @@ import drive.*;
  * directory.
  */
 public class Robot extends IterativeRobot {
-    final String defaultAuto = "Default";
+    final String defaultAuto = "Low Bar";
     final String customAuto = "My Auto";
 	SendableChooser autoDefenseChooser;
 	SendableChooser autoPositionChooser;
