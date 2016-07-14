@@ -70,6 +70,9 @@ public class Robot extends IterativeRobot {
     	case "Rough Terrain":
     		RoughTerrain.cross(autoPosition);
     		break;
+    	case "Moat":
+    		Moat.cross(autoPosition);
+    		break;
     	}
     }
     

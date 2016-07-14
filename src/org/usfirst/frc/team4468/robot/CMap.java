@@ -52,13 +52,19 @@ public class CMap {
 		shooterLeftTalon = new Talon(4);
 		shooterRightTalon = new Talon(5);
 		
+		leftDriveTalon.setInverted(true);
+		
 		leftDriveEncoder = new Encoder(0, 1);
 		rightDriveEncoder = new Encoder(2, 3);
+		
+		leftDriveEncoder.setReverseDirection(true);
 		
 		leftPID = new leftPID();
 		rightPID = new rightPID();
 		
 		compressor = new Compressor();
+		
+		compressor.setClosedLoopControl(true);
 		
 		initialCrossComplete = false;
 		linedUp = false;
