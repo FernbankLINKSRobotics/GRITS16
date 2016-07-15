@@ -28,14 +28,14 @@ public class Robot extends IterativeRobot {
     	CMap.initialize();
     	
     	autoDefenseChooser = new SendableChooser();
-        autoDefenseChooser.addDefault("Low Bar", defaultAuto);
-        autoDefenseChooser.addObject("Cheval", "Cheval");
-        autoDefenseChooser.addObject("Ramparts", "Ramparts");
-        autoDefenseChooser.addObject("Rock Wall", "Rock Wall");
-        autoDefenseChooser.addObject("Rough Terrain", "Rough Terrain");
+        autoDefenseChooser.addDefault("Low Bar", defaultAuto); //Permanent 1
+        autoDefenseChooser.addObject("Cheval", "Cheval"); //Only Category B Defense
+        autoDefenseChooser.addObject("Ramparts", "Ramparts"); //One of Two Category C
+        autoDefenseChooser.addObject("Moat", "Moat"); //One of Two Category C
+        autoDefenseChooser.addObject("Rock Wall", "Rock Wall"); // One of Two Category D 
+        autoDefenseChooser.addObject("Rough Terrain", "Rough Terrain"); //One of Two Category D
         
         autoPositionChooser = new SendableChooser();
-        autoPositionChooser.addDefault("1", 1);
         autoPositionChooser.addObject("2", 2);
         autoPositionChooser.addObject("3", 3);
         autoPositionChooser.addObject("4", 4);
