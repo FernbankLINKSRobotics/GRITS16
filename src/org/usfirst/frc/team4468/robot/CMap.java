@@ -62,17 +62,22 @@ public class CMap {
 		
 		leftDriveEncoder.setReverseDirection(true);
 		
+		leftDriveEncoder.reset();
+		rightDriveEncoder.reset();
+		
 		leftPID = new leftPID();
 		rightPID = new rightPID();
 		
 		compressor = new Compressor();
 		
-		compressor.setClosedLoopControl(true);
+		compressor.start();
 		
 		initialCrossComplete = false;
 		linedUp = false;
 		launched = false;
 		backInNeutral = false;
+		
+		System.out.println("All values are initialized");
 		
 	}
 }

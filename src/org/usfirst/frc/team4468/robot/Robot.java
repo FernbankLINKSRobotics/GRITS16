@@ -43,6 +43,8 @@ public class Robot extends IterativeRobot {
         
         SmartDashboard.putData("Which Defense?", autoDefenseChooser);
         SmartDashboard.putData("Which Position?", autoPositionChooser);
+        
+        System.out.println("The choosers should be on the Dashboard");
     }
     
     public void autonomousInit(){
@@ -53,6 +55,9 @@ public class Robot extends IterativeRobot {
     public void autonomousPeriodic(){
     	String autoDefense = (String) autoDefenseChooser.getSelected();
     	Integer autoPosition = (Integer) autoPositionChooser.getSelected();
+    	
+    	System.out.println("Defense Chosen:" + autoDefense);
+    	System.out.println("Position of Defense:" + autoPosition);
     	
     	switch (autoDefense){
     	case "Low Bar":
