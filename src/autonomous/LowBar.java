@@ -22,15 +22,31 @@ public class LowBar {
 			CMap.rightPID.setSetpoint(156);
 			if(CMap.leftPID.getPosition() > 154){
 				CMap.initialCrossComplete = true;
+				System.out.println("I've crossed the Low Bar!");
 			}
+			//Lines Up for a Shot
 		} else if (!CMap.linedUp){
 			CMap.leftPID.setSetpoint(177); //Needs to be tweaked
 			if(CMap.leftPID.getPosition() >= 175){
 				CMap.linedUp = true;
+				System.out.println("I'm lined up! About to fire!");
 			}
-		} else {
-			CMap.leftPID.disable();
-			CMap.rightPID.disable();
+			//Launches the boulder
+		} else if (!CMap.launched) {
+			CMap.shooterLeftTalon.set(1.0);
+			CMap.shooterRightTalon.set(1.0);
+			CMap.timeSinceLaunch += 1;
+			if(CMap.timeSinceLaunch >= 250){ //5 seconds to launch boulder
+				CMap.launched = true;
+				CMap.shooterLeftTalon.set(0);
+				CMap.shooterRightTalon.set(0);
+			}
+		} else if (!CMap.backInNeutral) {
+			CMap.leftPID.setSetpoint(156);
+			if(CMap.leftPID.getPosition() <= 154){
+				CMap.leftPID.setSetpoint(0);
+				CMap.rightPID.setSetpoint(0);
+			}
 		}
 		
 		

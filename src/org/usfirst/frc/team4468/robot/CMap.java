@@ -5,6 +5,9 @@ import PIDsub.*;
 public class CMap {
 	public static boolean initialCrossComplete;
 	public static boolean linedUp;
+	public static boolean launched;
+	public static boolean backInNeutral;
+	public static int timeSinceLaunch;
 	
     public static final double wheelDiameter = 6;
     public static final double pulsePerRevolution = 360;
@@ -68,6 +71,8 @@ public class CMap {
 		
 		initialCrossComplete = false;
 		linedUp = false;
+		launched = false;
+		backInNeutral = false;
 		
 	}
 }
