@@ -7,6 +7,7 @@ public class CMap {
 	public static boolean linedUp;
 	public static boolean launched;
 	public static boolean backInNeutral;
+	public static boolean visionLinedUp;
 	public static int timeSinceLaunch;
 	
     public static final double wheelDiameter = 6;

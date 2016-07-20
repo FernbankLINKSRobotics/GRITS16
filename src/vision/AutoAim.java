@@ -26,12 +26,14 @@ public class AutoAim {
 		 */
 		
 		
-		for(int i = 0; i <areas.length; i++){
-			if(areas[i] > 0){
-				targetIndex = i;
+		for(int i = 0; i < areas.length; i++){
+			if(areas[i] > 0 && centerX[i] >= 200 && centerX[i] <= 150 && centerY[i] > 200 ){
+				CMap.visionLinedUp = true;
+			} else {
+				CMap.visionLinedUp = false;
 			}
 		}
-		return true;
+		return CMap.visionLinedUp;
 		
 		
 	}
