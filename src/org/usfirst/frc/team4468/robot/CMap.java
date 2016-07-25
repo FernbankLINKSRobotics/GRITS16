@@ -7,7 +7,8 @@ public class CMap {
 	public static boolean linedUp;
 	public static boolean launched;
 	public static boolean backInNeutral;
-	public static boolean visionLinedUp;
+	public static boolean visionAimed;
+	public static boolean encoderLinedUpMessageSent;
 	public static int timeSinceLaunch;
 	
     public static final double wheelDiameter = 6;
@@ -16,7 +17,7 @@ public class CMap {
     public static final double gearRatio = 64.0/20.0;
     public static final double Fudgefactor = 1.0;
     
-    final double distanceperpulse = Math.PI*wheelDiameter/pulsePerRevolution /
+    private final static double distancePerPulse = Math.PI*wheelDiameter/pulsePerRevolution /
     		encoderGearRatio/gearRatio * Fudgefactor;
     
 	public static Joystick leftJoystick;
@@ -66,6 +67,9 @@ public class CMap {
 		leftDriveEncoder.reset();
 		rightDriveEncoder.reset();
 		
+		leftDriveEncoder.setDistancePerPulse(distancePerPulse);
+		rightDriveEncoder.setDistancePerPulse(distancePerPulse);
+		
 		leftPID = new leftPID();
 		rightPID = new rightPID();
 		
@@ -77,6 +81,7 @@ public class CMap {
 		linedUp = false;
 		launched = false;
 		backInNeutral = false;
+		encoderLinedUpMessageSent = false;
 		
 		System.out.println("All values are initialized");
 		

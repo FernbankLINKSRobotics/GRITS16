@@ -4,16 +4,16 @@ package org.usfirst.frc.team4468.robot;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 import org.usfirst.frc.team4468.robot.*;
 
 import autonomous.*;
 import drive.*;
+import shooter.*;
+import vision.*;
 
 
 public class Robot extends IterativeRobot {
     final String defaultAuto = "Low Bar";
-    final String customAuto = "My Auto";
 	SendableChooser autoDefenseChooser;
 	SendableChooser autoPositionChooser;
 	
@@ -42,7 +42,7 @@ public class Robot extends IterativeRobot {
     }
     
     public void autonomousInit(){
-
+    		
 	}
     	
     
@@ -82,6 +82,9 @@ public class Robot extends IterativeRobot {
     public void teleopPeriodic(){
     	Drive.drive();
     	Shift.shiftDrive();
+    	if(CMap.armJoystick.getTrigger()){
+    		
+    	}
     }
     
     public void disabledInit(){

@@ -1,7 +1,8 @@
 package autonomous;
 import org.usfirst.frc.team4468.robot.*;
 import vision.*;
-
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
+import shooter.*;
 public class LowBar {
 	/*
 	 * The code first checks if it has crossed.
@@ -17,6 +18,7 @@ public class LowBar {
 	 * As of right now, the code is set up for a one boulder autonomous.
 	 */
 	public static void cross(){
+		NetworkTable table = NetworkTable.getTable("GRIP/myContoursReport");
 		if(!CMap.initialCrossComplete){
 			CMap.leftPID.setSetpoint(156);
 			CMap.rightPID.setSetpoint(156);
@@ -28,28 +30,35 @@ public class LowBar {
 		} else if (!CMap.linedUp){
 			CMap.leftPID.setSetpoint(177); //Needs to be tweaked
 			if(CMap.leftPID.getPosition() >= 175){
-				CMap.linedUp = true;
-				System.out.println("I'm lined up! About to fire!");
+				//Sends encoder lined up message once
+				if(!CMap.encoderLinedUpMessageSent){
+					System.out.println("I'm lined up with my encoders. "
+							+ "Checking with my camera!");
+					CMap.encoderLinedUpMessageSent = true;
+				}
+				//Checks to see if vision aimed.
+				if(AutoAim.visionLinedUp(table)){
+					CMap.linedUp = true;
+					System.out.println("My camera says I'm lined up!"
+							+ " Ready to fire!");
+				}
 			}
 			//Launches the boulder
-		} else if (!CMap.launched) {
-			CMap.shooterLeftTalon.set(1.0);
-			CMap.shooterRightTalon.set(1.0);
-			CMap.timeSinceLaunch += 1;
-			if(CMap.timeSinceLaunch >= 250){ //5 seconds to launch boulder
-				CMap.launched = true;
-				CMap.shooterLeftTalon.set(0);
-				CMap.shooterRightTalon.set(0);
-			}
+		} else if (!Launch.autoLaunch()) {
+				//It needs to wait here until
+				//The boulder has launched
+			
+			}/*
 		} else if (!CMap.backInNeutral) {
 			CMap.leftPID.setSetpoint(156);
 			if(CMap.leftPID.getPosition() <= 154){
 				CMap.leftPID.setSetpoint(0);
 				CMap.rightPID.setSetpoint(0);
 			}
-		}
+		}*/
 		
 		
 		
 	}
 }
+

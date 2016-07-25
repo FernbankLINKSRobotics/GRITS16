@@ -13,28 +13,31 @@ public class AutoAim {
 	 * known as contours, and we have GRIP filtering
 	 * them based on color, area, and the x-coordinate.
 	 */
-	public static boolean aim(NetworkTable table, 
-			String target){
+	public static boolean visionLinedUp(NetworkTable table){
+		double[] areas = table.getNumberArray("area", defaultValue);
+		double[] centerX = table.getNumberArray("centerX", defaultValue);
+		double[] centerY = table.getNumberArray("CenterY", defaultValue);
+
+		for(int i = 0; i < areas.length; i++){
+			if(areas[i] > 0 && 
+					centerX[i] >= 200 && centerX[i] <= 150 &&
+					centerY[i] > 200 ){
+				CMap.visionAimed = true;
+			} else {
+				CMap.visionAimed = false;
+			}
+		}
+		return CMap.visionAimed;
+	}
+	
+	public static void visionAim(NetworkTable table){
 		double[] areas = table.getNumberArray("area", defaultValue);
 		double[] centerX = table.getNumberArray("centerX", defaultValue);
 		double[] centerY = table.getNumberArray("CenterY", defaultValue);
 		int targetIndex;
-		/*
-		 * (0,0) = Top Left Corner of Camera Screen
-		 * 
-		 * 
-		 */
-		
 		
 		for(int i = 0; i < areas.length; i++){
-			if(areas[i] > 0 && centerX[i] >= 200 && centerX[i] <= 150 && centerY[i] > 200 ){
-				CMap.visionLinedUp = true;
-			} else {
-				CMap.visionLinedUp = false;
-			}
+			
 		}
-		return CMap.visionLinedUp;
-		
-		
 	}
 }
