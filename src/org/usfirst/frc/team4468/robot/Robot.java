@@ -22,7 +22,6 @@ public class Robot extends IterativeRobot {
     	CMap.initialize();
     	
     	autoDefenseChooser = new SendableChooser();
-        autoDefenseChooser.addDefault("Low Bar", defaultAuto); //Permanent 1
         autoDefenseChooser.addObject("Cheval", "Cheval"); //Only Category B Defense
         autoDefenseChooser.addObject("Ramparts", "Ramparts"); //One of Two Category C
         autoDefenseChooser.addObject("Moat", "Moat"); //One of Two Category C
@@ -54,9 +53,6 @@ public class Robot extends IterativeRobot {
     	System.out.println("Position of Defense:" + autoPosition);
     	
     	switch (autoDefense){
-    	case "Low Bar":
-    		LowBar.cross();
-    		break;
     	case "Cheval":
     		Cheval.cross(autoPosition);
     		break;
@@ -76,15 +72,13 @@ public class Robot extends IterativeRobot {
     }
     
     public void teleopInit(){
-    	
+    	CMap.turnController.getPIDController().disable();
     }
     
     public void teleopPeriodic(){
     	Drive.drive();
     	Shift.shiftDrive();
-    	if(CMap.armJoystick.getTrigger()){
-    		
-    	}
+    	Launch.shootBoulder();
     }
     
     public void disabledInit(){
