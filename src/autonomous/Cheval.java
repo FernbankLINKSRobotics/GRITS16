@@ -14,34 +14,27 @@ public class Cheval {
 		//Lining Up the Robot
 			
 		} else if (!CMap.linedUp){
-			/*
-			table = NetworkTable.getTable("GRIP/myContoursReport");
-			CMap.linedUp = AutoAim.aim(NetworkTable.getTable("GRIP/myContoursReport"), "left");
-			*/
-			
-			//Lining up with encoders because the robot's
-			//orientation doesn't change drastically.
-			switch(position){
-			case 2:
-				CMap.leftPID.getPIDController().setSetpoint(0);
-				CMap.rightPID.getPIDController().setSetpoint(0);
-				break;
-			case 3:
-				CMap.leftPID.getPIDController().setSetpoint(0);
-				CMap.rightPID.getPIDController().setSetpoint(0);
-				break;
-			case 4:
-				CMap.leftPID.getPIDController().setSetpoint(0);
-				CMap.rightPID.getPIDController().setSetpoint(0);
-				break;
-			case 5:
-				CMap.leftPID.getPIDController().setSetpoint(0);
-				CMap.rightPID.getPIDController().setSetpoint(0);
-				break;
-			}
-		} else {
 			CMap.leftPID.getPIDController().disable();
 			CMap.rightPID.getPIDController().disable();
+			
+			CMap.armPID.getPIDController().setSetpoint(100);
+			
+			switch(position){
+			case 2:
+				CMap.turnController.setSetpoint(100);
+				break;
+			case 3:
+				CMap.turnController.setSetpoint(100);
+				break;
+			case 4:
+				CMap.turnController.setSetpoint(100);
+				break;
+			case 5:
+				CMap.turnController.setSetpoint(100);
+				break;
+			}
+		} else if (!CMap.launched) {
+			CMap.turnController.getPIDController().disable();
 		}
 		
 		

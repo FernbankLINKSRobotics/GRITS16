@@ -26,11 +26,12 @@ public class shooterArmPID extends PIDSubsystem {
         // Return your input value for the PID loop
         // e.g. a sensor, like a potentiometer:
         // yourPot.getAverageVoltage() / kYourMaxVoltage;
-    	return 0.0;
+    	return CMap.shooterArmEncoder.getDistance();
     }
     
     protected void usePIDOutput(double output) {
         // Use output to drive your system, like a motor
         // e.g. yourMotor.set(output);
+    	CMap.shooterArmTalon.set(output);
     }
 }

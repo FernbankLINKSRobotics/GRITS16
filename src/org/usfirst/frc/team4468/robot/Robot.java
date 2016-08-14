@@ -2,6 +2,7 @@
 package org.usfirst.frc.team4468.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4468.robot.*;
@@ -72,7 +73,7 @@ public class Robot extends IterativeRobot {
     }
     
     public void teleopInit(){
-    	CMap.turnController.getPIDController().disable();
+    	CMap.turnController.getPIDController().reset();
     }
     
     public void teleopPeriodic(){
@@ -87,6 +88,10 @@ public class Robot extends IterativeRobot {
     
     public void disabledPeriodic(){
     	
+    }
+    
+    public void testPeriodic(){
+    	LiveWindow.addSensor("Gyroscope", 1, CMap.gyro);
     }
     
 }

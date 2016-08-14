@@ -38,8 +38,8 @@ public class CMap {
 	
 	public static Encoder leftDriveEncoder;
 	public static Encoder rightDriveEncoder;
-	
-	public static AHRS Gyro;
+	public static Encoder shooterArmEncoder;
+	public static AnalogGyro gyro;
 	
 	public static leftPID leftPID;
 	public static rightPID rightPID;
@@ -76,20 +76,23 @@ public class CMap {
 		
 		leftDriveEncoder = new Encoder(0, 1);
 		rightDriveEncoder = new Encoder(2, 3);
-		
+		shooterArmEncoder = new Encoder(4, 5);
 		
 		leftDriveEncoder.setReverseDirection(true);
 		
 		leftDriveEncoder.reset();
 		rightDriveEncoder.reset();
+		shooterArmEncoder.reset();
 		
 		leftDriveEncoder.setDistancePerPulse(distancePerPulse);
 		rightDriveEncoder.setDistancePerPulse(distancePerPulse);
 		
 		try{
-			Gyro = new AHRS(SPI.Port.kMXP);
-			Gyro.reset();
+			gyro = new AnalogGyro(1);
+			gyro.calibrate();
+			gyro.reset();
 			gyroInitialized = true;
+			System.out.println("Gyro has been initialized");
 		} catch(RuntimeException e){
 			DriverStation.reportError("Error Communicating with Gyro:" + e.getMessage(), true);
 			gyroInitialized = false;
@@ -98,18 +101,14 @@ public class CMap {
 		leftPID = new leftPID();
 		rightPID = new rightPID();
 		armPID = new shooterArmPID();
+		
+		PIDRobotDrive = new RobotDrive(leftDriveTalon, rightDriveTalon);
 		if(gyroInitialized){
 			turnController = new turnController();
-			turnController.getPIDController().setInputRange(-180.0f, 180.0f);
+			turnController.getPIDController().setInputRange(-180.0, 180.0);
 			turnController.getPIDController().setOutputRange(-1.0, 1.0);
 			turnController.getPIDController().disable();
 		}
-		
-		PIDRobotDrive = new RobotDrive(leftDriveTalon, rightDriveTalon);
-		
-
-		
-		
 		compressor = new Compressor();
 		
 		compressor.setClosedLoopControl(true);
