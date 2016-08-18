@@ -28,6 +28,6 @@ public class turnController extends PIDSubsystem {
     }
     
     protected void usePIDOutput(double output) {
-    	CMap.PIDRobotDrive.drive(0.2, output);
+    	CMap.driveTrain.drive(0.2, output);
     }
 }

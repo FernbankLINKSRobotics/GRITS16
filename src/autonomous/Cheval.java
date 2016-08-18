@@ -8,6 +8,7 @@ public class Cheval {
 		if(!CMap.initialCrossComplete){
 			CMap.leftPID.setSetpoint(156);
 			CMap.rightPID.setSetpoint(156);
+			CMap.driveTrain.tankDrive(CMap.PIDLeftValue, CMap.PIDRightValue);
 			if(CMap.leftPID.getPosition() > 154){
 				CMap.initialCrossComplete = true;
 			}

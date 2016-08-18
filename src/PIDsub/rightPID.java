@@ -30,6 +30,6 @@ public class rightPID extends PIDSubsystem {
     }
     
     protected void usePIDOutput(double output) {
-    	CMap.rightDriveTalon.set(output);
+    	CMap.PIDRightValue = output;
     }
 }

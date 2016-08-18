@@ -15,6 +15,10 @@ public class CMap {
 	public static int timeSinceLaunch;
 	public static boolean gyroInitialized;
 	
+	//PID Values
+	public static double PIDLeftValue;
+	public static double PIDRightValue;
+	
     public static final double wheelDiameter = 6;
     public static final double pulsePerRevolution = 360;
     public static final double encoderGearRatio = 3;
@@ -34,7 +38,7 @@ public class CMap {
 	public static Talon shooterLeftTalon;
 	public static Talon shooterRightTalon;
 	
-	public static RobotDrive PIDRobotDrive;
+	public static RobotDrive driveTrain;
 	
 	public static Encoder leftDriveEncoder;
 	public static Encoder rightDriveEncoder;
@@ -102,13 +106,13 @@ public class CMap {
 		rightPID = new rightPID();
 		armPID = new shooterArmPID();
 		
-		PIDRobotDrive = new RobotDrive(leftDriveTalon, rightDriveTalon);
-		if(gyroInitialized){
-			turnController = new turnController();
-			turnController.getPIDController().setInputRange(-180.0, 180.0);
-			turnController.getPIDController().setOutputRange(-1.0, 1.0);
-			turnController.getPIDController().disable();
-		}
+		driveTrain = new RobotDrive(leftDriveTalon, rightDriveTalon);
+		
+		turnController = new turnController();
+		turnController.getPIDController().setInputRange(-180.0, 180.0);
+		turnController.getPIDController().setOutputRange(-1.0, 1.0);
+		turnController.getPIDController().disable();
+		
 		compressor = new Compressor();
 		
 		compressor.setClosedLoopControl(true);
