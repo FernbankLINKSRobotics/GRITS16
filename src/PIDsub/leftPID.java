@@ -28,6 +28,6 @@ public class leftPID extends PIDSubsystem {
     }
     
     protected void usePIDOutput(double output) {
-    	CMap.leftDriveTalon.set(output);
+    	CMap.PIDLeftValue = output;
     }
 }

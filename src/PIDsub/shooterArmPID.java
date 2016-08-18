@@ -18,20 +18,14 @@ public class shooterArmPID extends PIDSubsystem {
     }
     
     public void initDefaultCommand() {
-        // Set the default command for a subsystem here.
-        //setDefaultCommand(new MySpecialCommand());
+
     }
     
     protected double returnPIDInput() {
-        // Return your input value for the PID loop
-        // e.g. a sensor, like a potentiometer:
-        // yourPot.getAverageVoltage() / kYourMaxVoltage;
     	return CMap.shooterArmEncoder.getDistance();
     }
     
     protected void usePIDOutput(double output) {
-        // Use output to drive your system, like a motor
-        // e.g. yourMotor.set(output);
     	CMap.shooterArmTalon.set(output);
     }
 }

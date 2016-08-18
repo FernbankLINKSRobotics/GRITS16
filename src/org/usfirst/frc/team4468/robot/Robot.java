@@ -90,8 +90,12 @@ public class Robot extends IterativeRobot {
     	
     }
     
-    public void testPeriodic(){
+    public void testInit(){
     	LiveWindow.addSensor("Gyroscope", 1, CMap.gyro);
+    }
+    
+    public void testPeriodic(){
+    	CMap.gyro.startLiveWindowMode();
     }
     
 }
