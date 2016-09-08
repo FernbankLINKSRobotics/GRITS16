@@ -5,15 +5,16 @@ import org.usfirst.frc.team4468.robot.CMap;
 public class Cheval {
 	
 	public static void cross(int position){
+		//Will run first
 		if(!CMap.initialCrossComplete){
 			CMap.leftPID.setSetpoint(156);
 			CMap.rightPID.setSetpoint(156);
 			CMap.driveTrain.tankDrive(CMap.PIDLeftValue, CMap.PIDRightValue);
-			if(CMap.leftPID.getPosition() > 154){
+			if(CMap.leftPID.onTarget() && CMap.rightPID.onTarget()){
 				CMap.initialCrossComplete = true;
 			}
 		//Lining Up the Robot
-			
+			//Second Case
 		} else if (!CMap.linedUp){
 			CMap.leftPID.getPIDController().disable();
 			CMap.rightPID.getPIDController().disable();
@@ -36,6 +37,7 @@ public class Cheval {
 			}
 		} else if (!CMap.launched) {
 			CMap.turnController.getPIDController().disable();
+			CMap.armPID.getPIDController().setSetpoint(30);
 		}
 		
 		

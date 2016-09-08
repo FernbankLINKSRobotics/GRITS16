@@ -5,10 +5,9 @@ import edu.wpi.first.wpilibj.networktables.*;
 public class AutoAim {
 	static double[] defaultValue = new double[0];
 	
-	
 	/*
 	 * So the way GRIP works is that it will run a
-	 * special algorithim where wit will pick up the
+	 * special algorithm where wit will pick up the
 	 * outlines of the target. These outlines are also
 	 * known as contours, and we have GRIP filtering
 	 * them based on color, area, and the x-coordinate.

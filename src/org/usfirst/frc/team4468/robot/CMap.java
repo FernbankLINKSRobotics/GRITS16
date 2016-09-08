@@ -1,17 +1,16 @@
 package org.usfirst.frc.team4468.robot;
 import edu.wpi.first.wpilibj.*;
 
-import com.kauailabs.navx.frc.AHRS;
 
 import PIDsub.*;
 
 public class CMap {
-	public static boolean initialCrossComplete;
-	public static boolean linedUp;
-	public static boolean launched;
-	public static boolean backInNeutral;
-	public static boolean visionAimed;
-	public static boolean encoderLinedUpMessageSent;
+	public static boolean initialCrossComplete; //Crossed Defense?
+	public static boolean linedUp; //Gyro Lined Up?
+	public static boolean launched; //Boulder Launched?
+	public static boolean backInNeutral; //Back in Neutral?
+	public static boolean visionAimed; //Vision OKed?
+	//public static boolean encoderLinedUpMessageSent;
 	public static int timeSinceLaunch;
 	public static boolean gyroInitialized;
 	
@@ -91,16 +90,12 @@ public class CMap {
 		leftDriveEncoder.setDistancePerPulse(distancePerPulse);
 		rightDriveEncoder.setDistancePerPulse(distancePerPulse);
 		
-		try{
-			gyro = new AnalogGyro(1);
-			gyro.calibrate();
-			gyro.reset();
-			gyroInitialized = true;
-			System.out.println("Gyro has been initialized");
-		} catch(RuntimeException e){
-			DriverStation.reportError("Error Communicating with Gyro:" + e.getMessage(), true);
-			gyroInitialized = false;
-		}
+		
+		gyro = new AnalogGyro(1);
+		gyro.calibrate();
+		gyro.reset();
+		gyroInitialized = true;
+		System.out.println("Gyro has been initialized");
 		
 		leftPID = new leftPID();
 		rightPID = new rightPID();
@@ -121,7 +116,7 @@ public class CMap {
 		linedUp = false;
 		launched = false;
 		backInNeutral = false;
-		encoderLinedUpMessageSent = false;
+		//encoderLinedUpMessageSent = false;
 		
 		System.out.println("All values are initialized");
 		

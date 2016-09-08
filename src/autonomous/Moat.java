@@ -15,7 +15,7 @@ public class Moat {
 			CMap.leftPID.setSetpoint(156);
 			CMap.rightPID.setSetpoint(156);
 			CMap.driveTrain.tankDrive(CMap.PIDLeftValue, CMap.PIDRightValue);
-			if(CMap.leftPID.getPosition() > 154){
+			if(CMap.leftPID.onTarget() && CMap.rightPID.onTarget()){
 				CMap.initialCrossComplete = true;
 			}
 		//Lining Up the Robot
