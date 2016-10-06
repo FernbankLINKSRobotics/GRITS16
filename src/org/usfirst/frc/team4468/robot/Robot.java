@@ -73,13 +73,11 @@ public class Robot extends IterativeRobot {
     }
     
     public void teleopInit(){
-    	CMap.turnController.getPIDController().reset();
+    	
     }
     
     public void teleopPeriodic(){
-    	Drive.drive();
-    	Shift.shiftDrive();
-    	Launch.shootBoulder();
+    	
     }
     
     public void disabledInit(){
@@ -91,11 +89,11 @@ public class Robot extends IterativeRobot {
     }
     
     public void testInit(){
-    	LiveWindow.addSensor("Gyroscope", 1, CMap.gyro);
+    	
     }
     
     public void testPeriodic(){
-    	CMap.gyro.startLiveWindowMode();
+    	
     }
     
 }

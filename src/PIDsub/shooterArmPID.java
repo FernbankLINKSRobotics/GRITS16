@@ -22,10 +22,10 @@ public class shooterArmPID extends PIDSubsystem {
     }
     
     protected double returnPIDInput() {
-    	return CMap.shooterArmEncoder.getDistance();
+    	return 0;
     }
     
     protected void usePIDOutput(double output) {
-    	CMap.shooterArmTalon.set(output);
+    	
     }
 }

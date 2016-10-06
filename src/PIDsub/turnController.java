@@ -24,11 +24,12 @@ public class turnController extends PIDSubsystem {
         // e.g. a sensor, like a potentiometer:
         // yourPot.getAverageVoltage() / kYourMaxVoltage;
     	
-    	return CMap.gyro.pidGet();
+    	return 0;
+    	
     }
     
     protected void usePIDOutput(double output) {
-    	CMap.driveTrain.tankDrive(-output, output);
+    	
     	
     }
 }

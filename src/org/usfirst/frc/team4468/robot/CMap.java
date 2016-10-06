@@ -5,120 +5,26 @@ import edu.wpi.first.wpilibj.*;
 import PIDsub.*;
 
 public class CMap {
-	public static boolean initialCrossComplete; //Crossed Defense?
-	public static boolean linedUp; //Gyro Lined Up?
-	public static boolean launched; //Boulder Launched?
-	public static boolean backInNeutral; //Back in Neutral?
-	public static boolean visionAimed; //Vision OKed?
-	//public static boolean encoderLinedUpMessageSent;
-	public static int timeSinceLaunch;
-	public static boolean gyroInitialized;
+
+	//Drive System
 	
-	//PID Values
-	public static double PIDLeftValue;
-	public static double PIDRightValue;
 	
-    public static final double wheelDiameter = 6;
-    public static final double pulsePerRevolution = 360;
-    public static final double encoderGearRatio = 3;
-    public static final double gearRatio = 64.0/20.0;
-    public static final double Fudgefactor = 1.0;
-    
-    private final static double distancePerPulse = Math.PI*wheelDiameter/pulsePerRevolution /
-    		encoderGearRatio/gearRatio * Fudgefactor;
-    
-	public static Joystick leftJoystick;
-	public static Joystick rightJoystick;
-	public static Joystick armJoystick;
+	AnalogGyro gyro;
+	Encoder leftDrive, rightDrive;
+	DoubleSolenoid gearShift;
 	
-	public static Talon leftDriveTalon;
-	public static Talon rightDriveTalon;
-	public static Talon shooterArmTalon;
-	public static Talon shooterLeftTalon;
-	public static Talon shooterRightTalon;
-	
-	public static RobotDrive driveTrain;
-	
-	public static Encoder leftDriveEncoder;
-	public static Encoder rightDriveEncoder;
-	public static Encoder shooterArmEncoder;
-	public static AnalogGyro gyro;
-	
-	public static leftPID leftPID;
-	public static rightPID rightPID;
-	public static shooterArmPID armPID;
-	public static turnController turnController;
+	//Shooting System
 	
 	
 	
-	public static Compressor compressor;
-	
-	public static Solenoid leftGearShift, rightGearShift;
-	public static Solenoid shooterPunch;
-	
-	
-	
-	
+	Encoder shooterArm;
+	Talon intakeMotor;
+	DoubleSolenoid intakeSolenoid;
+	//TEST COMPONENTS
+	public static Talon testMotor;
 	
 	public static void initialize(){
-		leftJoystick = new Joystick(0);
-		rightJoystick = new Joystick(1);
-		armJoystick = new Joystick(2);
-		
-		leftDriveTalon = new Talon(0);
-		rightDriveTalon = new Talon(1);
-		shooterArmTalon = new Talon(2);
-		shooterLeftTalon = new Talon(3);
-		shooterRightTalon = new Talon(4);
-		
-		leftGearShift = new Solenoid(1);
-		rightGearShift = new Solenoid(2);
-		shooterPunch = new Solenoid(3);
-		
-		leftDriveTalon.setInverted(true);
-		
-		leftDriveEncoder = new Encoder(0, 1);
-		rightDriveEncoder = new Encoder(2, 3);
-		shooterArmEncoder = new Encoder(4, 5);
-		
-		leftDriveEncoder.setReverseDirection(true);
-		
-		leftDriveEncoder.reset();
-		rightDriveEncoder.reset();
-		shooterArmEncoder.reset();
-		
-		leftDriveEncoder.setDistancePerPulse(distancePerPulse);
-		rightDriveEncoder.setDistancePerPulse(distancePerPulse);
-		
-		
-		gyro = new AnalogGyro(1);
-		gyro.calibrate();
-		gyro.reset();
-		gyroInitialized = true;
-		System.out.println("Gyro has been initialized");
-		
-		leftPID = new leftPID();
-		rightPID = new rightPID();
-		armPID = new shooterArmPID();
-		
-		driveTrain = new RobotDrive(leftDriveTalon, rightDriveTalon);
-		
-		turnController = new turnController();
-		turnController.getPIDController().setInputRange(-180.0, 180.0);
-		turnController.getPIDController().setOutputRange(-1.0, 1.0);
-		turnController.getPIDController().disable();
-		
-		compressor = new Compressor();
-		
-		compressor.setClosedLoopControl(true);
-		
-		initialCrossComplete = false;
-		linedUp = false;
-		launched = false;
-		backInNeutral = false;
-		//encoderLinedUpMessageSent = false;
-		
-		System.out.println("All values are initialized");
+		testMotor = new Talon(0);
 		
 	}
 }
