@@ -1,6 +1,8 @@
 
 package org.usfirst.frc.team4468.robot;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -73,10 +75,18 @@ public class Robot extends IterativeRobot {
     }
     
     public void teleopInit(){
-    	
+    	CMap.turnPID.getPIDController().disable();
     }
     
     public void teleopPeriodic(){
+    	Drive.drive(); //Driving & Shifting
+    	
+    	Load.changeIntakePosition();
+    	Load.loadBoulderIntoShooter();
+    	Load.spinPneumaticIntakeWheels();
+    	
+    	VerticalAim.aim();
+    	Launch.shootBoulder();
     	
     }
     
@@ -89,11 +99,11 @@ public class Robot extends IterativeRobot {
     }
     
     public void testInit(){
-    	
+
     }
     
     public void testPeriodic(){
-    	
+    	System.out.println("Get()" + String.valueOf(CMap.shooterArmEncoder.getDistance()));
     }
     
 }
