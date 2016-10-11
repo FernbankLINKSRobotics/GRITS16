@@ -16,14 +16,13 @@ public class CMap {
 	public static DoubleSolenoid gearShift;
 	public static Solenoid leftShift, rightShift;
 	
-	public static RobotDrive drivetrain;
-	
+	//public static RobotDrive drivetrain;
 	
 	//Shooting System
 	public static Encoder shooterArmEncoder;
 	public static Talon intakeMotorA, intakeMotorB, shooterMotor, shooterArmMotor;
 	public static DoubleSolenoid intakeSolenoid;
-	
+	public static DigitalInput leftSwtich, rightSwitch;
 	
 	//PID Subsystems
 	public static leftPID leftDrivePID;
@@ -47,21 +46,18 @@ public class CMap {
 		
 		leftDrive.setInverted(true);
 		
-		drivetrain = new RobotDrive(leftDrive, rightDrive);
-		
 		gyro = new AnalogGyro(0);
 		gyro.setSensitivity(0.007);
 		gyro.calibrate();
+		gyro.reset();
 		
-		leftDriveEncoder = new Encoder(0, 1);
-		rightDriveEncoder = new Encoder(2, 3);
-		
-		leftDriveEncoder.setDistancePerPulse(0); //Inches
-		rightDriveEncoder.setDistancePerPulse(0); //Inches
-		
-		leftDriveEncoder.setReverseDirection(true);
+		leftDriveEncoder = new Encoder(0, 1, false, Encoder.EncodingType.k4X);
+		rightDriveEncoder = new Encoder(2, 3, true, Encoder.EncodingType.k4X);
 		
 		
+		leftDriveEncoder.setDistancePerPulse(0.0175147928994083); //Inches
+		rightDriveEncoder.setDistancePerPulse(0.0175147928994083); //Inches
+				
 		gearShift = new DoubleSolenoid(0, 1);
 		
 		//Shooting System Init
@@ -74,14 +70,17 @@ public class CMap {
 		
 		intakeSolenoid = new DoubleSolenoid(2, 3);
 		
-		shooterArmEncoder = new Encoder(4, 5);
+		shooterArmEncoder = new Encoder(4, 5, false, Encoder.EncodingType.k4X);
 		shooterArmEncoder.reset();
-		//shooterArmEncoder.setDistancePerPulse(.0041140170437840); //.0041140170437840 Degrees Per Pulse
-		//shooterArmEncoder.setDistancePerPulse(.0104602510460251);
-		shooterArmEncoder.setDistancePerPulse(.00276449549);
-		compressor = new Compressor();
-		compressor.stop();
+		shooterArmEncoder.setDistancePerPulse(.043755697356427);
 		
+		compressor = new Compressor();
+		compressor.setClosedLoopControl(true);
+		
+		/*
+		leftSwtich = new DigitalInput(6);
+		rightSwitch = new DigitalInput(7);
+		*/
 		//PID Initialization
 		shooterPID = new shooterArmPID();
 		leftDrivePID = new leftPID();
@@ -93,10 +92,13 @@ public class CMap {
 		rightDrivePID.getPIDController().enable();
 		turnPID.getPIDController().disable();
 		
-		shooterPID.getPIDController().setOutputRange(-.4, .4);
+		
+		shooterPID.getPIDController().setOutputRange(-.7, .7);
 		leftDrivePID.getPIDController().setOutputRange(-.2, .2);
 		rightDrivePID.getPIDController().setOutputRange(-.2, .2);
 		turnPID.getPIDController().setOutputRange(-0.4, .4);
+		
+		leftDrivePID.getPIDController().setAbsoluteTolerance(1);
 		
 		turnPID.setInputRange(-180.0, 180.0);
 		

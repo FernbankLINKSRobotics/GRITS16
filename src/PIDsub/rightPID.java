@@ -25,10 +25,10 @@ public class rightPID extends PIDSubsystem {
     }
     
     protected double returnPIDInput() {
-    	return 0;
+    	return CMap.rightDriveEncoder.getDistance();
     }
     
     protected void usePIDOutput(double output) {
-
+    	CMap.rightDrive.set(output);
     }
 }

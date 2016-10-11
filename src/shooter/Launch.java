@@ -20,8 +20,10 @@ public class Launch {
 		 			wheelsSpinning = true;
 		 		} else if(wheelsSpinning){
 		 			//Pneumatic Punch
-		 			Timer.delay(2);
+		 			System.out.println("Boulder launched at " + Timer.getMatchTime());
+		 			Timer.delay(.5);
 		 			spinWheels(false);
+		 			wheelsSpinning = false;
 	 			}
 		 	}
 		 	
@@ -29,6 +31,7 @@ public class Launch {
 		 } else if(CMap.auxJoystick.getRawButton(2) && !abortBeenPressed){
 		 	spinWheels(false);
 		 	abortBeenPressed = true;
+		 	System.out.println("Shooting motion aborted at " + Timer.getMatchTime());
 		 } else {
 		 	abortBeenPressed = false;
 		 	shootingBeenPressed = false;
@@ -36,13 +39,22 @@ public class Launch {
 		 
 	}
 	
-	public static void spinWheels(boolean state){
-		if(state){
-			CMap.intakeMotorA.set(1.0);
-			CMap.intakeMotorB.set(1.0);
+	public static void spinWheels(boolean toSpin){
+		if(toSpin){
+			CMap.shooterMotor.set(1.0);
+			System.out.println("Wheels starting to spin at " + Timer.getMatchTime());
 		} else {
-			CMap.intakeMotorA.set(0);
-			CMap.intakeMotorB.set(0);
+			CMap.shooterMotor.set(0);
+			System.out.println("Wheels starting to stop spinning at " + Timer.getMatchTime());
 		}
+	}
+
+	public static void autoShoot(){
+		spinWheels(true);
+		Timer.delay(3);
+		//Pneumatic Punch
+		System.out.println("Boulder launched at " + Timer.getMatchTime());
+		Timer.delay(2);
+		spinWheels(false);
 	}
 }

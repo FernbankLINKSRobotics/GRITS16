@@ -6,9 +6,10 @@ public class VerticalAim {
 	public static void aim(){
 		
 		if(CMap.auxJoystick.getY() > 0.2){
-			CMap.shooterPID.setSetpoint(CMap.shooterPID.getSetpoint() + 0.3);
+			CMap.shooterPID.setSetpoint(CMap.shooterPID.getSetpoint() + 0.5);
+			
 		} else if(CMap.auxJoystick.getY() < -0.2){
-			CMap.shooterPID.setSetpoint(CMap.shooterPID.getSetpoint() - 0.08);
+			CMap.shooterPID.setSetpoint(CMap.shooterPID.getSetpoint() - 0.5);
 		} else if(CMap.auxJoystick.getRawButton(6)){
 			CMap.shooterPID.setSetpoint(1);
 		} else {

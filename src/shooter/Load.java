@@ -42,9 +42,16 @@ public class Load {
 			//Spin out of Intake
 			CMap.intakeMotorA.set(-1.0);
 			CMap.intakeMotorB.set(-1.0);
+		} else if(CMap.auxJoystick.getRawButton(3)) {
+			//Load Boulder Into Shooter
+			loadBoulderIntoShooter();
+		} else if(CMap.auxJoystick.getTrigger() || CMap.auxJoystick.getRawButton(2)){
+			//Shoot Boulder
+			Launch.shootBoulder();
 		} else {
 			CMap.intakeMotorA.set(0);
 			CMap.intakeMotorB.set(0);
+			CMap.shooterMotor.set(0);
 		}
 		
 	}
@@ -70,8 +77,8 @@ public class Load {
 		}*/
 		
 		if(CMap.auxJoystick.getRawButton(3)){
-			CMap.intakeMotorA.set(1.0);
-			CMap.intakeMotorB.set(1.0);
+			CMap.intakeMotorA.set(-1.0);
+			CMap.intakeMotorB.set(-1.0);
 			CMap.shooterMotor.set(-1.0);
 		}
 		 

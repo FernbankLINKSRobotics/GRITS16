@@ -6,6 +6,11 @@ public class Drive {
 
 	public static void drive(){
 		Shift.shift();
-		CMap.drivetrain.tankDrive(CMap.leftJoystick.getY() * -1, CMap.rightJoystick.getY() * -1);
+		CMap.leftDrive.set(CMap.leftJoystick.getY() * -1);
+		CMap.rightDrive.set(CMap.rightJoystick.getY() * -1);
+		if(CMap.leftDrive.get() == 0 && CMap.rightDrive.get() == 0){
+			
+			
+		}
 	}
 }

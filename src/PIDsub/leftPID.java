@@ -23,10 +23,10 @@ public class leftPID extends PIDSubsystem {
     }
     
     protected double returnPIDInput() {
-    	return 0;
+    	return CMap.leftDriveEncoder.getDistance();
     }
     
     protected void usePIDOutput(double output) {
-    	
+    	CMap.leftDrive.set(output);
     }
 }

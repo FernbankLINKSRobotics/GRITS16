@@ -4,6 +4,7 @@ package org.usfirst.frc.team4468.robot;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -19,6 +20,9 @@ public class Robot extends IterativeRobot {
     final String defaultAuto = "Low Bar";
 	SendableChooser autoDefenseChooser;
 	SendableChooser autoPositionChooser;
+	private boolean firstTest = false;
+	private double differenceBetweenSamples = 0;
+	private double lastSample = 0.0;
 	
 	
     public void robotInit() {
@@ -26,10 +30,12 @@ public class Robot extends IterativeRobot {
     	
     	autoDefenseChooser = new SendableChooser();
         autoDefenseChooser.addObject("Cheval", "Cheval"); //Only Category B Defense
+        autoDefenseChooser.addObject("Log Roll", "Log Roll");
         autoDefenseChooser.addObject("Ramparts", "Ramparts"); //One of Two Category C
         autoDefenseChooser.addObject("Moat", "Moat"); //One of Two Category C
         autoDefenseChooser.addObject("Rock Wall", "Rock Wall"); // One of Two Category D 
         autoDefenseChooser.addObject("Rough Terrain", "Rough Terrain"); //One of Two Category D
+        
         
         autoPositionChooser = new SendableChooser();
         autoPositionChooser.addObject("2", 2);
@@ -38,13 +44,14 @@ public class Robot extends IterativeRobot {
         autoPositionChooser.addObject("5", 5);
         
         SmartDashboard.putData("Which Defense?", autoDefenseChooser);
+        Timer.delay(1.5); //So they don't end up on top of each other
         SmartDashboard.putData("Which Position?", autoPositionChooser);
         
         System.out.println("The choosers should be on the Dashboard");
     }
     
     public void autonomousInit(){
-    		
+    	
 	}
     	
     
@@ -76,18 +83,28 @@ public class Robot extends IterativeRobot {
     
     public void teleopInit(){
     	CMap.turnPID.getPIDController().disable();
+		CMap.leftDrivePID.getPIDController().disable();
+		CMap.rightDrivePID.getPIDController().disable();
     }
     
     public void teleopPeriodic(){
     	Drive.drive(); //Driving & Shifting
     	
     	Load.changeIntakePosition();
-    	Load.loadBoulderIntoShooter();
     	Load.spinPneumaticIntakeWheels();
     	
+    	//System.out.println(CMap.shooterArmEncoder.getDistance());
+    	
     	VerticalAim.aim();
+    	
     	Launch.shootBoulder();
     	
+    	//System.out.println(CMap.gyro.pidGet());
+
+    	/*
+		System.out.println("Left " + String.valueOf(CMap.leftDriveEncoder.get()));
+		System.out.println("Right " + String.valueOf(CMap.rightDriveEncoder.get()));
+    	*/
     }
     
     public void disabledInit(){
@@ -99,11 +116,14 @@ public class Robot extends IterativeRobot {
     }
     
     public void testInit(){
-
+    	/*
+    	CMap.turnPID.getPIDController().enable();
+    	CMap.turnPID.getPIDController().setSetpoint(50);
+    	*/
+    	
     }
     
     public void testPeriodic(){
-    	System.out.println("Get()" + String.valueOf(CMap.shooterArmEncoder.getDistance()));
     }
     
 }
