@@ -13,6 +13,7 @@ public class Launch {
 		
 		 if(CMap.auxJoystick.getTrigger()){
 		 	if(!shootingBeenPressed){
+		 		shootingBeenPressed = true;
 		 		if(!wheelsSpinning){
 		 			//If the wheels aren't spinning
 		 			//First shooting motion
@@ -20,18 +21,16 @@ public class Launch {
 		 			wheelsSpinning = true;
 		 		} else if(wheelsSpinning){
 		 			//Pneumatic Punch
-		 			System.out.println("Boulder launched at " + Timer.getMatchTime());
-		 			Timer.delay(.5);
+		 			System.out.println("Boulder launched");
 		 			spinWheels(false);
 		 			wheelsSpinning = false;
 	 			}
 		 	}
 		 	
-		 	shootingBeenPressed = true;
 		 } else if(CMap.auxJoystick.getRawButton(2) && !abortBeenPressed){
 		 	spinWheels(false);
 		 	abortBeenPressed = true;
-		 	System.out.println("Shooting motion aborted at " + Timer.getMatchTime());
+		 	System.out.println("Shooting motion aborted at ");
 		 } else {
 		 	abortBeenPressed = false;
 		 	shootingBeenPressed = false;
@@ -42,10 +41,10 @@ public class Launch {
 	public static void spinWheels(boolean toSpin){
 		if(toSpin){
 			CMap.shooterMotor.set(1.0);
-			System.out.println("Wheels starting to spin at " + Timer.getMatchTime());
+			System.out.println("Wheels starting to spin at ");
 		} else {
 			CMap.shooterMotor.set(0);
-			System.out.println("Wheels starting to stop spinning at " + Timer.getMatchTime());
+			System.out.println("Wheels starting to stop spinning at ");
 		}
 	}
 
@@ -53,7 +52,7 @@ public class Launch {
 		spinWheels(true);
 		Timer.delay(3);
 		//Pneumatic Punch
-		System.out.println("Boulder launched at " + Timer.getMatchTime());
+		System.out.println("Boulder launched at ");
 		Timer.delay(2);
 		spinWheels(false);
 	}

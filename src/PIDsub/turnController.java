@@ -6,7 +6,7 @@ import org.usfirst.frc.team4468.robot.*;
  *
  */
 public class turnController extends PIDSubsystem {
-	private static final double Kp = 1;
+	private static final double Kp = .2;
 	private static final double Ki = 0;
 	private static final double Kd = 0;
     // Initialize your subsystem here
@@ -23,16 +23,14 @@ public class turnController extends PIDSubsystem {
         // Return your input value for the PID loop
         // e.g. a sensor, like a potentiometer:
         // yourPot.getAverageVoltage() / kYourMaxVoltage;
-    	System.out.println("Input " + CMap.gyro.pidGet());
+    	//System.out.println("Input" + CMap.gyro.pidGet());
     	return CMap.gyro.pidGet();
     	
     }
     
     protected void usePIDOutput(double output) {
-    	System.out.println("Output: " + output);
     	CMap.leftDrive.set(-output);
     	CMap.rightDrive.set(output);
-    	 
     	
     }
 }

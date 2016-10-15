@@ -8,9 +8,9 @@ import org.usfirst.frc.team4468.robot.*;
  *
  */
 public class leftPID extends PIDSubsystem {
-	private static final int Kp = 1;
-	private static final int Ki = 0;
-	private static final int Kd = 0;
+	private static final double Kp = .2;
+	private static final double Ki = 0;
+	private static final double Kd = 0;
 	
     // Initialize your subsystem here
     public leftPID() {

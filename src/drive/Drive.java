@@ -8,9 +8,5 @@ public class Drive {
 		Shift.shift();
 		CMap.leftDrive.set(CMap.leftJoystick.getY() * -1);
 		CMap.rightDrive.set(CMap.rightJoystick.getY() * -1);
-		if(CMap.leftDrive.get() == 0 && CMap.rightDrive.get() == 0){
-			
-			
-		}
 	}
 }

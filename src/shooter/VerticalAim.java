@@ -3,6 +3,7 @@ package shooter;
 import org.usfirst.frc.team4468.robot.CMap;
 
 public class VerticalAim {
+	
 	public static void aim(){
 		
 		if(CMap.auxJoystick.getY() > 0.2){

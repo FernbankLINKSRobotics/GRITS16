@@ -5,6 +5,8 @@ import edu.wpi.first.wpilibj.*;
 import PIDsub.*;
 
 public class CMap {
+	public static double turnCoefficient = .2261;
+	
 	//Input Devices
 	public static Joystick leftJoystick, rightJoystick, auxJoystick;
 	public static Compressor compressor;
@@ -83,24 +85,25 @@ public class CMap {
 		*/
 		//PID Initialization
 		shooterPID = new shooterArmPID();
-		leftDrivePID = new leftPID();
+		leftDrivePID = new leftPID(); //360 degrees / 81.4 inches = 4.4226 degrees per inch
+		//81.4 inches / 360 degrees = .2261 inches per degree
 		rightDrivePID = new rightPID();
 		turnPID = new turnController();
 		
-		shooterPID.getPIDController().enable();
+		shooterPID.getPIDController().disable();
 		leftDrivePID.getPIDController().enable();
 		rightDrivePID.getPIDController().enable();
 		turnPID.getPIDController().disable();
 		
 		
 		shooterPID.getPIDController().setOutputRange(-.7, .7);
-		leftDrivePID.getPIDController().setOutputRange(-.2, .2);
-		rightDrivePID.getPIDController().setOutputRange(-.2, .2);
-		turnPID.getPIDController().setOutputRange(-0.4, .4);
+		leftDrivePID.getPIDController().setOutputRange(-.6, .6);
+		rightDrivePID.getPIDController().setOutputRange(-.6, .6);
+		
 		
 		leftDrivePID.getPIDController().setAbsoluteTolerance(1);
 		
-		turnPID.setInputRange(-180.0, 180.0);
+		turnPID.getPIDController().setInputRange(-180.0, 180.0);
 		
 		
 		
