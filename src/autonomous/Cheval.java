@@ -1,45 +1,38 @@
 package autonomous;
 
 import org.usfirst.frc.team4468.robot.CMap;
+import drive.Wedge;
 
 public class Cheval {
-	
-	public static void cross(int position){
-		//Will run first
-		if(!CMap.initialCrossComplete){
-			CMap.leftPID.setSetpoint(156);
-			CMap.rightPID.setSetpoint(156);
-			CMap.driveTrain.tankDrive(CMap.PIDLeftValue, CMap.PIDRightValue);
-			if(CMap.leftPID.onTarget() && CMap.rightPID.onTarget()){
-				CMap.initialCrossComplete = true;
+	private static boolean reached = false;
+	private static boolean wedged = false;
+	private static boolean crossed = false;
+	private static boolean first = true;
+	private static double firstTime;
+	public static void cross(double time){
+		if(!reached){
+			CMap.leftDrivePID.getPIDController().setSetpoint(20);
+			CMap.rightDrivePID.getPIDController().setSetpoint(20);
+			if(CMap.leftDrivePID.getPosition() >= 19){
+				CMap.leftDrivePID.getPIDController().disable();
+				CMap.rightDrivePID.getPIDController().disable();
+				reached = true;
 			}
-		//Lining Up the Robot
-			//Second Case
-		} else if (!CMap.linedUp){
-			CMap.leftPID.getPIDController().disable();
-			CMap.rightPID.getPIDController().disable();
-			
-			CMap.armPID.getPIDController().setSetpoint(100);
-			
-			switch(position){
-			case 2:
-				CMap.turnController.setSetpoint(100);
-				break;
-			case 3:
-				CMap.turnController.setSetpoint(100);
-				break;
-			case 4:
-				CMap.turnController.setSetpoint(100);
-				break;
-			case 5:
-				CMap.turnController.setSetpoint(100);
-				break;
+		} else if(!wedged){
+			Wedge.change("down");
+			if(CMap.wedgeArmPID.getPosition() >= CMap.wedgeArmPID.getSetpoint() - 1){
+				wedged = true;
 			}
-		} else if (!CMap.launched) {
-			CMap.turnController.getPIDController().disable();
-			CMap.armPID.getPIDController().setSetpoint(30);
+		} else if(!crossed) {
+			CMap.leftDrive.set(1);
+			CMap.rightDrive.set(1);
+			if(first){
+				firstTime = time;
+				first = false;
+			} else if((time - firstTime) >= 4){
+				CMap.leftDrive.set(0);
+				CMap.rightDrive.set(0);
+			}
 		}
-		
-		
 	}
 }

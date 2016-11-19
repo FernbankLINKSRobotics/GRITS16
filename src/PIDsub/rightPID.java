@@ -10,9 +10,9 @@ import edu.wpi.first.wpilibj.*;
  *
  */
 public class rightPID extends PIDSubsystem {
-	private static final int Kp = 1;
-	private static final int Ki = 0;
-	private static final int Kd = 0;
+	private static final double Kp = .2;
+	private static final double Ki = 0;
+	private static final double Kd = 0;
 	
     // Initialize your subsystem here
     public rightPID() {
@@ -25,11 +25,10 @@ public class rightPID extends PIDSubsystem {
     }
     
     protected double returnPIDInput() {
-    	double rightDistance = CMap.rightDriveEncoder.getDistance();
-    	return rightDistance;
+    	return CMap.rightDriveEncoder.getDistance();
     }
     
     protected void usePIDOutput(double output) {
-    	CMap.PIDRightValue = output;
+    	CMap.rightDrive.set(output);
     }
 }

@@ -1,101 +1,109 @@
 
 package org.usfirst.frc.team4468.robot;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4468.robot.*;
 
-import autonomous.*;
 import drive.*;
 import shooter.*;
-import vision.*;
+import autonomous.*;
 
 
 public class Robot extends IterativeRobot {
-    final String defaultAuto = "Low Bar";
+	private static int count = 0;
+	private static String autoChoice = "cross";
 	SendableChooser autoDefenseChooser;
-	SendableChooser autoPositionChooser;
-	
+	private static String defense = "";
 	
     public void robotInit() {
     	CMap.initialize();
+
     	
-    	autoDefenseChooser = new SendableChooser();
+       	autoDefenseChooser = new SendableChooser();
+       	autoDefenseChooser.addDefault("Low Bar", "Low Bar");
         autoDefenseChooser.addObject("Cheval", "Cheval"); //Only Category B Defense
+        autoDefenseChooser.addObject("Log Roll", "Log Roll"); //Other Category B
         autoDefenseChooser.addObject("Ramparts", "Ramparts"); //One of Two Category C
         autoDefenseChooser.addObject("Moat", "Moat"); //One of Two Category C
         autoDefenseChooser.addObject("Rock Wall", "Rock Wall"); // One of Two Category D 
         autoDefenseChooser.addObject("Rough Terrain", "Rough Terrain"); //One of Two Category D
-        
-        autoPositionChooser = new SendableChooser();
-        autoPositionChooser.addObject("2", 2);
-        autoPositionChooser.addObject("3", 3);
-        autoPositionChooser.addObject("4", 4);
-        autoPositionChooser.addObject("5", 5);
+        autoDefenseChooser.addObject("Score from Spy Box?", "Spy Box");
         
         SmartDashboard.putData("Which Defense?", autoDefenseChooser);
-        SmartDashboard.putData("Which Position?", autoPositionChooser);
-        
-        System.out.println("The choosers should be on the Dashboard");
+    	
     }
     
     public void autonomousInit(){
-    		
+    	CMap.autoTimer.start();
+    	
+    	CMap.leftDrive.set(1);
+    	CMap.rightDrive.set(1);
 	}
     	
     
     public void autonomousPeriodic(){
-    	String autoDefense = (String) autoDefenseChooser.getSelected();
-    	Integer autoPosition = (Integer) autoPositionChooser.getSelected();
+    	/*
+    	if(defense == "Spy Box"){
+    		SpyBox.execute(CMap.autoTimer.get());
+    	} else if(defense == "Cheval"){
+    		Cheval.cross(CMap.autoTimer.get());
+    	} else {
+    		if(CMap.autoTimer.get() >= 5){
+    			CMap.leftDrive.set(0);
+    	    	CMap.rightDrive.set(0);
+    		} else {
+    			CMap.leftDrive.set(1.0);
+    	    	CMap.rightDrive.set(1.0);
+    		}
+    	}*/
     	
-    	System.out.println("Defense Chosen:" + autoDefense);
-    	System.out.println("Position of Defense:" + autoPosition);
-    	
-    	switch (autoDefense){
-    	case "Cheval":
-    		Cheval.cross(autoPosition);
-    		break;
-    	case "Ramparts":
-    		Ramparts.cross(autoPosition);
-    		break;
-    	case "Rock Wall":
-    		RockWall.cross(autoPosition);
-    		break;
-    	case "Rough Terrain":
-    		RoughTerrain.cross(autoPosition);
-    		break;
-    	case "Moat":
-    		Moat.cross(autoPosition);
-    		break;
+    	if(CMap.autoTimer.get() >= 3.5){
+    		CMap.leftDrive.set(.3);
+    		CMap.rightDrive.set(.3);
+    		if(CMap.autoTimer.get() >= 6){
+    			CMap.leftDrive.set(0);
+    			CMap.rightDrive.set(0);
+    		}
     	}
     }
     
     public void teleopInit(){
-    	CMap.turnController.getPIDController().reset();
+		CMap.leftDrivePID.getPIDController().disable();
+		CMap.rightDrivePID.getPIDController().disable();
+		CMap.autoTimer.stop();
+		CMap.teleopTimer.reset();
+		CMap.teleopTimer.start();
     }
     
     public void teleopPeriodic(){
-    	Drive.drive();
-    	Shift.shiftDrive();
-    	Launch.shootBoulder();
+    		Drive.drive(); //Driving & Shifting & Wedging
+    		Load.changeIntakePosition();
+    		Load.spinPneumaticIntakeWheels();
+    		
     }
     
     public void disabledInit(){
-    	
     }
     
     public void disabledPeriodic(){
-    	
     }
     
     public void testInit(){
-    	LiveWindow.addSensor("Gyroscope", 1, CMap.gyro);
+    	System.out.println("Timer Reset");
+    	CMap.teleopTimer.reset();
+    	CMap.teleopTimer.stop();
+    	CMap.teleopTimer.start();
     }
     
     public void testPeriodic(){
-    	CMap.gyro.startLiveWindowMode();
+    	CMap.wedgeArmPID.getPIDController().setSetpoint(800);
+    	System.out.println("Encoder " + CMap.wedgeEncoder.get());
     }
     
 }

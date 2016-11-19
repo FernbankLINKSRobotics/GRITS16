@@ -5,37 +5,27 @@ import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.DriverStation;
 
 public class Shift {
-	static boolean beenPressed = false;
-	static boolean turnOn = false;
-	static boolean justShifted = false;
-	
-	public static void shiftDrive(){
-    	if (CMap.leftJoystick.getTrigger()) {
-    		if (!beenPressed) { 
-    			turnOn = !turnOn; 
-    			justShifted = !justShifted;
-    		}
-    		beenPressed = true; 
-    	}
-    	else {
-    		beenPressed = false;
-    	}
-    	
-    	if (turnOn) { 
-    		CMap.leftGearShift.set(true); 
-    		CMap.rightGearShift.set(true);
-    		if(justShifted){
-    			System.out.println("Shifted to high gear at " + DriverStation.getInstance().getMatchTime() + ".");
-    			justShifted = false;
-    		}
-    	}
-    	else { 
-    		CMap.leftGearShift.set(false);
-    		CMap.rightGearShift.set(false);
-    		if(justShifted){
-    			System.out.println("Shifted to low gear at " + DriverStation.getInstance().getMatchTime() + ".");
-    			justShifted = false;
-    		}
-    	}
+	private static boolean beenPressed = false;
+	private static boolean solenoidOn = false;
+	public static void shift(){
+		
+		if(CMap.leftJoystick.getTrigger()){
+			if(!beenPressed){
+				solenoidOn = !solenoidOn;
+				System.out.println("Gear Shift set to " + solenoidOn + " at " + CMap.teleopTimer.get() + " seconds.");
+			}
+			
+			beenPressed = true;
+		} else {
+			beenPressed = false;
+		}
+		
+		if(solenoidOn){
+			CMap.gearShift.set(DoubleSolenoid.Value.kForward);
+		} else {
+			CMap.gearShift.set(DoubleSolenoid.Value.kReverse);
+		}
+		 
 	}
+	
 }
