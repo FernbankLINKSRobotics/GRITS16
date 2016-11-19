@@ -12,82 +12,98 @@ import org.usfirst.frc.team4468.robot.*;
 
 import drive.*;
 import shooter.*;
-import vision.*;
+import autonomous.*;
 
 
 public class Robot extends IterativeRobot {
-    final String defaultAuto = "Low Bar";
+	private static int count = 0;
+	private static String autoChoice = "cross";
 	SendableChooser autoDefenseChooser;
-	SendableChooser autoPositionChooser;
-	private boolean firstTest = false;
-	private double differenceBetweenSamples = 0;
-	private double lastSample = 0.0;
-	private double headingDifference;
-	private boolean stopped = false;
-	
+	private static String defense = "";
 	
     public void robotInit() {
     	CMap.initialize();
+
+    	
+       	autoDefenseChooser = new SendableChooser();
+       	autoDefenseChooser.addDefault("Low Bar", "Low Bar");
+        autoDefenseChooser.addObject("Cheval", "Cheval"); //Only Category B Defense
+        autoDefenseChooser.addObject("Log Roll", "Log Roll"); //Other Category B
+        autoDefenseChooser.addObject("Ramparts", "Ramparts"); //One of Two Category C
+        autoDefenseChooser.addObject("Moat", "Moat"); //One of Two Category C
+        autoDefenseChooser.addObject("Rock Wall", "Rock Wall"); // One of Two Category D 
+        autoDefenseChooser.addObject("Rough Terrain", "Rough Terrain"); //One of Two Category D
+        autoDefenseChooser.addObject("Score from Spy Box?", "Spy Box");
+        
+        SmartDashboard.putData("Which Defense?", autoDefenseChooser);
+    	
     }
     
     public void autonomousInit(){
+    	CMap.autoTimer.start();
     	
+    	CMap.leftDrive.set(1);
+    	CMap.rightDrive.set(1);
 	}
     	
     
     public void autonomousPeriodic(){
+    	/*
+    	if(defense == "Spy Box"){
+    		SpyBox.execute(CMap.autoTimer.get());
+    	} else if(defense == "Cheval"){
+    		Cheval.cross(CMap.autoTimer.get());
+    	} else {
+    		if(CMap.autoTimer.get() >= 5){
+    			CMap.leftDrive.set(0);
+    	    	CMap.rightDrive.set(0);
+    		} else {
+    			CMap.leftDrive.set(1.0);
+    	    	CMap.rightDrive.set(1.0);
+    		}
+    	}*/
     	
+    	if(CMap.autoTimer.get() >= 3.5){
+    		CMap.leftDrive.set(.3);
+    		CMap.rightDrive.set(.3);
+    		if(CMap.autoTimer.get() >= 6){
+    			CMap.leftDrive.set(0);
+    			CMap.rightDrive.set(0);
+    		}
+    	}
     }
     
     public void teleopInit(){
-    	
-    	CMap.turnPID.getPIDController().disable();
 		CMap.leftDrivePID.getPIDController().disable();
 		CMap.rightDrivePID.getPIDController().disable();
+		CMap.autoTimer.stop();
+		CMap.teleopTimer.reset();
+		CMap.teleopTimer.start();
     }
     
     public void teleopPeriodic(){
-    	Drive.drive(); //Driving & Shifting
-    	
-    	Load.changeIntakePosition();
-    	Load.spinPneumaticIntakeWheels();
-    	
-    	//System.out.println(CMap.shooterArmEncoder.getDistance());
-    	
-    	VerticalAim.aim();
-    	
-    	Launch.shootBoulder();
-    	
-    	//System.out.println(CMap.gyro.pidGet());
-
-    	/*
-		System.out.println("Left " + String.valueOf(CMap.leftDriveEncoder.get()));
-		System.out.println("Right " + String.valueOf(CMap.rightDriveEncoder.get()));
-    	*/
+    		Drive.drive(); //Driving & Shifting & Wedging
+    		Load.changeIntakePosition();
+    		Load.spinPneumaticIntakeWheels();
+    		
     }
     
     public void disabledInit(){
-
-    	CMap.leftDriveEncoder.reset();
-    	CMap.rightDriveEncoder.reset();
     }
     
     public void disabledPeriodic(){
-    	CMap.leftDriveEncoder.reset();
-    	CMap.rightDriveEncoder.reset();
     }
     
     public void testInit(){
-    	CMap.leftDrivePID.getPIDController().enable();
-    	CMap.rightDrivePID.getPIDController().enable();
-    	CMap.leftDriveEncoder.reset();
-    	CMap.rightDriveEncoder.reset();
-    	CMap.gyro.reset();
+    	System.out.println("Timer Reset");
+    	CMap.teleopTimer.reset();
+    	CMap.teleopTimer.stop();
+    	CMap.teleopTimer.start();
     }
     
     public void testPeriodic(){
-    	System.out.println(CMap.leftDriveEncoder.getDistance());
-    	System.out.println(CMap.rightDriveEncoder.getDistance());
-    	}
+    	CMap.wedgeArmPID.getPIDController().setSetpoint(800);
+    	System.out.println("Encoder " + CMap.wedgeEncoder.get());
+    }
     
 }

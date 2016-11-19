@@ -1,11 +1,18 @@
 package org.usfirst.frc.team4468.robot;
 import edu.wpi.first.wpilibj.*;
-
-
+import edu.wpi.first.wpilibj.vision.AxisCamera;
+import edu.wpi.first.wpilibj.vision.USBCamera;
 import PIDsub.*;
 
 public class CMap {
-	public static double turnCoefficient = .2261;
+	public static final double turnCoefficient = .2261;
+	public static boolean aiming = false;
+	public static boolean aimed = false;
+	public static boolean inMotion = false; //Shooting Motion
+	
+	public static Timer autoTimer;
+	public static Timer teleopTimer;
+	
 	
 	//Input Devices
 	public static Joystick leftJoystick, rightJoystick, auxJoystick;
@@ -13,24 +20,25 @@ public class CMap {
 	
 	//Drive System
 	public static Talon leftDrive, rightDrive;
-	public static AnalogGyro gyro;
 	public static Encoder leftDriveEncoder, rightDriveEncoder;
 	public static DoubleSolenoid gearShift;
 	public static Solenoid leftShift, rightShift;
 	
+	 //Camera
+	public static CameraServer server;
+	
 	//public static RobotDrive drivetrain;
 	
 	//Shooting System
-	public static Encoder shooterArmEncoder;
-	public static Talon intakeMotorA, intakeMotorB, shooterMotor, shooterArmMotor;
-	public static DoubleSolenoid intakeSolenoid;
+	public static Encoder wedgeEncoder;
+	public static Talon intakeMotorA, intakeMotorB, wedgeMotor;
+	public static DoubleSolenoid intakeSolenoid, shooterSolenoid;
 	public static DigitalInput leftSwtich, rightSwitch;
 	
 	//PID Subsystems
 	public static leftPID leftDrivePID;
 	public static rightPID rightDrivePID;
-	public static shooterArmPID shooterPID;
-	public static turnController turnPID;
+	public static wedgePID wedgeArmPID;
 	
 	//TEST COMPONENTS
 	public static Talon testMotor;
@@ -48,11 +56,6 @@ public class CMap {
 		
 		leftDrive.setInverted(true);
 		
-		gyro = new AnalogGyro(0);
-		gyro.setSensitivity(0.007);
-		gyro.calibrate();
-		gyro.reset();
-		
 		leftDriveEncoder = new Encoder(0, 1, false, Encoder.EncodingType.k4X);
 		rightDriveEncoder = new Encoder(2, 3, true, Encoder.EncodingType.k4X);
 		
@@ -65,16 +68,16 @@ public class CMap {
 		//Shooting System Init
 		intakeMotorA = new Talon(3); //Might be one of them
 		intakeMotorB = new Talon(4);
-		shooterMotor = new Talon(7);
-		shooterArmMotor = new Talon(2); //Invert Motor
+		wedgeMotor = new Talon(2); //Invert Motor
 		
-		shooterArmMotor.setInverted(true);
+		wedgeMotor.setInverted(true);
 		
 		intakeSolenoid = new DoubleSolenoid(2, 3);
+		shooterSolenoid = new DoubleSolenoid(4, 5);
 		
-		shooterArmEncoder = new Encoder(4, 5, false, Encoder.EncodingType.k4X);
-		shooterArmEncoder.reset();
-		shooterArmEncoder.setDistancePerPulse(.043755697356427);
+		wedgeEncoder = new Encoder(4, 5, false, Encoder.EncodingType.k4X);
+		wedgeEncoder.reset();
+		wedgeEncoder.setDistancePerPulse(.02 * 3.5999999999);
 		
 		compressor = new Compressor();
 		compressor.setClosedLoopControl(true);
@@ -84,29 +87,38 @@ public class CMap {
 		rightSwitch = new DigitalInput(7);
 		*/
 		//PID Initialization
-		shooterPID = new shooterArmPID();
+		wedgeArmPID = new wedgePID();
 		leftDrivePID = new leftPID(); //360 degrees / 81.4 inches = 4.4226 degrees per inch
 		//81.4 inches / 360 degrees = .2261 inches per degree
 		rightDrivePID = new rightPID();
-		turnPID = new turnController();
-		
-		shooterPID.getPIDController().disable();
-		leftDrivePID.getPIDController().enable();
-		rightDrivePID.getPIDController().enable();
-		turnPID.getPIDController().disable();
 		
 		
-		shooterPID.getPIDController().setOutputRange(-.7, .7);
+		wedgeArmPID.getPIDController().disable();
+		leftDrivePID.getPIDController().disable();
+		rightDrivePID.getPIDController().disable();
+		
+		
+		wedgeArmPID.getPIDController().setOutputRange(-.25, .25);
 		leftDrivePID.getPIDController().setOutputRange(-.6, .6);
 		rightDrivePID.getPIDController().setOutputRange(-.6, .6);
 		
-		
+		wedgeArmPID.getPIDController().setPercentTolerance(1);
 		leftDrivePID.getPIDController().setAbsoluteTolerance(1);
 		
-		turnPID.getPIDController().setInputRange(-180.0, 180.0);
+		autoTimer = new Timer();
+		teleopTimer = new Timer();
+		
+		autoTimer.stop();
+		teleopTimer.stop();
+		
+		autoTimer.reset();
+		teleopTimer.reset();
 		
 		
+		//Camera
 		
+		server = CameraServer.getInstance();
+		server.startAutomaticCapture("cam0");
 		
 		
 		

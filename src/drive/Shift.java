@@ -12,6 +12,7 @@ public class Shift {
 		if(CMap.leftJoystick.getTrigger()){
 			if(!beenPressed){
 				solenoidOn = !solenoidOn;
+				System.out.println("Gear Shift set to " + solenoidOn + " at " + CMap.teleopTimer.get() + " seconds.");
 			}
 			
 			beenPressed = true;

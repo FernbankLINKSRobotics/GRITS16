@@ -7,14 +7,14 @@ import org.usfirst.frc.team4468.robot.CMap;
 /**
  *
  */
-public class shooterArmPID extends PIDSubsystem {
-	private static final double Kp = .08; //.18
+public class wedgePID extends PIDSubsystem {
+	private static final double Kp = .01; //.18
 	private static final double Ki = 0;
 	private static final double Kd = 0;
 	
     // Initialize your subsystem here
-    public shooterArmPID() {
-        super("shooterArmPID", Kp, Ki, Kd);
+    public wedgePID() {
+        super("wedgePID", Kp, Ki, Kd);
     }
     
     public void initDefaultCommand() {
@@ -22,10 +22,12 @@ public class shooterArmPID extends PIDSubsystem {
     }
     
     protected double returnPIDInput() {
-    	return CMap.shooterArmEncoder.getDistance();
+    	System.out.println("Input " + CMap.wedgeEncoder.getDistance());
+    	return CMap.wedgeEncoder.getDistance();
     }
     
     protected void usePIDOutput(double output) {
-    	CMap.shooterArmMotor.set(output);
+    	System.out.println("Output " + output);
+    	CMap.wedgeMotor.set(output);
     }
 }
